@@ -1,0 +1,160 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #111122;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%; height: 100%;">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "font": {"color": "white"}, "id": 36956512, "image": "images/36956512.jpg", "label": 36956512, "shape": "circularImage", "title": "Gadarla, the Mystery Dust Kaiju"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": 55063751, "image": "images/55063751.jpg", "label": 55063751, "shape": "circularImage", "title": "Gameciel, the Sea Turtle Kaiju"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": 93332803, "image": "images/93332803.jpg", "label": 93332803, "shape": "circularImage", "title": "Dogoran, the Mad Flame Kaiju"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": 73304257, "image": "images/73304257.jpg", "label": 73304257, "shape": "circularImage", "title": "Alpha, the Master of Beasts"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": 82385847, "image": "images/82385847.jpg", "label": 82385847, "shape": "circularImage", "title": "Dinowrestler Pankratops"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": 35405755, "image": "images/35405755.jpg", "label": 35405755, "shape": "circularImage", "title": "Kurikara Divincarnate"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": 23434538, "image": "images/23434538.jpg", "label": 23434538, "shape": "circularImage", "title": "Maxx \"C\""}, {"color": "#97c2fc", "font": {"color": "white"}, "id": 14558127, "image": "images/14558127.jpg", "label": 14558127, "shape": "circularImage", "title": "Ash Blossom"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": 78868119, "image": "images/78868119.jpg", "label": 78868119, "shape": "circularImage", "title": "Deep Sea Diva"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": 66451379, "image": "images/66451379.jpg", "label": 66451379, "shape": "circularImage", "title": "Graydle Alligator"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": 25533642, "image": "images/25533642.jpg", "label": 25533642, "shape": "circularImage", "title": "Altergeist Meluseek"}]);
+                  edges = new vis.DataSet([{"color": "lime", "from": 36956512, "to": 55063751, "width": 2}, {"color": "lime", "from": 36956512, "to": 93332803, "width": 2}, {"color": "lime", "from": 36956512, "to": 73304257, "width": 2}, {"color": "yellow", "from": 36956512, "to": 23434538, "width": 2}, {"color": "lime", "from": 55063751, "to": 93332803, "width": 2}, {"color": "lime", "from": 55063751, "to": 73304257, "width": 2}, {"color": "white", "from": 55063751, "to": 78868119, "width": 2}, {"color": "white", "from": 55063751, "to": 25533642, "width": 2}, {"color": "yellow", "from": 93332803, "to": 82385847, "width": 2}, {"color": "white", "from": 93332803, "to": 35405755, "width": 2}, {"color": "white", "from": 93332803, "to": 14558127, "width": 2}, {"color": "white", "from": 73304257, "to": 82385847, "width": 2}, {"color": "white", "from": 73304257, "to": 23434538, "width": 2}, {"color": "white", "from": 82385847, "to": 23434538, "width": 2}, {"color": "white", "from": 35405755, "to": 14558127, "width": 2}, {"color": "cyan", "from": 35405755, "to": 66451379, "width": 2}, {"color": "lime", "from": 35405755, "to": 25533642, "width": 2}, {"color": "lime", "from": 23434538, "to": 78868119, "width": 2}, {"color": "red", "from": 23434538, "to": 66451379, "width": 2}, {"color": "red", "from": 23434538, "to": 25533642, "width": 2}, {"color": "lime", "from": 14558127, "to": 66451379, "width": 2}, {"color": "white", "from": 78868119, "to": 66451379, "width": 2}, {"color": "white", "from": 78868119, "to": 25533642, "width": 2}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "layout": {
+        "hierarchical": null,
+        "improvedLayout": true,
+        "randomSeed": 118
+    },
+    "physics": {
+        "enabled": false,
+        "stabilization": {
+            "enabled": false,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
